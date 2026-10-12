@@ -17,7 +17,7 @@ permissions:
 jobs:
   build:
     name: Build debug APK
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout repository
@@ -30,21 +30,13 @@ jobs:
           java-version: "17"
           cache: gradle
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          packages: |
-            platforms;android-35
-            build-tools;35.0.0
+      - name: Show project files
+        run: |
+          pwd
+          find . -maxdepth 4 -type f | sort
 
-      - name: Accept Android SDK licenses
-        run: yes | sdkmanager --licenses > /dev/null || true
-
-      - name: Generate Gradle Wrapper
-        run: gradle wrapper --gradle-version 8.11.1
-
-      - name: Make Gradle executable
-        run: chmod +x ./gradlew
+      - name: Grant Gradle wrapper permission
+        run: chmod +x gradlew
 
       - name: Build debug APK
         run: ./gradlew --no-daemon --stacktrace assembleDebug
