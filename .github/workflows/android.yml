@@ -30,24 +30,19 @@ jobs:
           java-version: "17"
           cache: gradle
 
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+
       - name: Verify Android SDK
         run: |
           echo "ANDROID_HOME=$ANDROID_HOME"
-          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
-          ls -la "$ANDROID_HOME"
           ls -la "$ANDROID_HOME/platforms"
           ls -la "$ANDROID_HOME/build-tools"
 
-      - name: Show project files
-        run: |
-          pwd
-          find . -maxdepth 5 -type f | sort
-
-      - name: Grant Gradle wrapper permission
-        run: chmod +x ./gradlew
-
       - name: Build debug APK
-        run: ./gradlew --no-daemon --stacktrace assembleDebug
+        run: gradle --no-daemon --stacktrace assembleDebug
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
