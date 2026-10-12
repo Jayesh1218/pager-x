@@ -40,12 +40,8 @@ jobs:
       - name: Accept Android SDK licenses
         run: yes | sdkmanager --licenses > /dev/null || true
 
-      - name: Check Android SDK installation
-        run: |
-          sdkmanager --list_installed
-          ls -la "$ANDROID_HOME"
-          ls -la "$ANDROID_HOME/platforms"
-          ls -la "$ANDROID_HOME/build-tools"
+      - name: Generate Gradle Wrapper
+        run: gradle wrapper --gradle-version 8.11.1
 
       - name: Make Gradle executable
         run: chmod +x ./gradlew
